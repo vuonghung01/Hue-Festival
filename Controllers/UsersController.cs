@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hue_Festival;
-using Hue_Festival.Data;
+using Hue_Festival.Models;
+using System.Security.Cryptography;
 
 namespace Hue_Festival.Controllers
 {
@@ -21,15 +22,70 @@ namespace Hue_Festival.Controllers
             _context = context;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        // Dang ky
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserRegisterRequest req)
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            return await _context.Users.ToListAsync();
+            if (_context.Users.Any(u => u.Email == req.Email))
+            {
+                return BadRequest("Người dùng đã tồn tại.");
+            }
+
+            var user = new User
+            {
+                Email = req.Email,
+                Password = req.Password,
+                VerificationToken = CreateRandomToken()
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Tạo tài khoản thành công!");
+        }
+
+        // Dang nhap
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserRegisterRequest req)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+            if (user == null)
+            {
+                return BadRequest("Người dùng không tồn tại.");
+            }
+
+            if (user.Password != req.Password)
+            {
+                return BadRequest("Mật khẩu không đúng!");
+            }
+
+            if (user.VerifiedAt == null)
+            {
+                return BadRequest("Người dùng chưa xác thực!");
+            }
+
+            return Ok($"Đăng nhập thành công, {user.Email}");
+        }
+
+        // Xac thuc tai khoan
+        [HttpPost("verify")]
+        public async Task<IActionResult> Verify(string token)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.VerificationToken == token);
+            if (user == null)
+            {
+                return BadRequest("Token không hợp lệ.");
+            }
+
+            user.VerifiedAt = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            return Ok("Xác thực tài khoản thành công!");
+        }
+
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
 
         // GET: api/Users/5
@@ -79,21 +135,6 @@ namespace Hue_Festival.Controllers
             }
 
             return NoContent();
-        }
-
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-          if (_context.Users == null)
-          {
-              return Problem("Entity set 'HueFestivalContext.Users'  is null.");
-          }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5

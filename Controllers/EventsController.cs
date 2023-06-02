@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hue_Festival;
-using Hue_Festival.Data;
+using Hue_Festival.Models;
 
 namespace Hue_Festival.Controllers
 {

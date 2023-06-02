@@ -1,4 +1,4 @@
-﻿using Hue_Festival.Data;
+﻿using Hue_Festival.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hue_Festival

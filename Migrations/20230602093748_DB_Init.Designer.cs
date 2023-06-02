@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hue_Festival.Migrations
 {
     [DbContext(typeof(HueFestivalContext))]
-    [Migration("20230601152732_DbInit")]
-    partial class DbInit
+    [Migration("20230602093748_DB_Init")]
+    partial class DB_Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace Hue_Festival.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Hue_Festival.Data.Event", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("Event");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.EventLiked", b =>
+            modelBuilder.Entity("Hue_Festival.Models.EventLiked", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("EventLiked");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Location", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Location", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("Location");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.LocationLiked", b =>
+            modelBuilder.Entity("Hue_Festival.Models.LocationLiked", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,7 +138,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("LocationLiked");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.LocationType", b =>
+            modelBuilder.Entity("Hue_Festival.Models.LocationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,7 +163,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("LocationType");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.News", b =>
+            modelBuilder.Entity("Hue_Festival.Models.News", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +191,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.NewsLiked", b =>
+            modelBuilder.Entity("Hue_Festival.Models.NewsLiked", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -214,7 +214,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("NewsLiked");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.ProgramImage", b =>
+            modelBuilder.Entity("Hue_Festival.Models.ProgramImage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -239,7 +239,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("ProgramImage");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Programm", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Programm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -272,7 +272,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("Program");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Role", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -289,7 +289,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.SupportMenu", b =>
+            modelBuilder.Entity("Hue_Festival.Models.SupportMenu", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,7 +310,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("SupportMenu");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Ticket", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -343,7 +343,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("Ticket");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.TicketType", b =>
+            modelBuilder.Entity("Hue_Festival.Models.TicketType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -366,7 +366,7 @@ namespace Hue_Festival.Migrations
                     b.ToTable("TicketType");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.User", b =>
+            modelBuilder.Entity("Hue_Festival.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -374,8 +374,14 @@ namespace Hue_Festival.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -383,15 +389,16 @@ namespace Hue_Festival.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
+                    b.Property<string>("VerificationToken")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -400,15 +407,15 @@ namespace Hue_Festival.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Event", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Event", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.Location", "Location")
+                    b.HasOne("Hue_Festival.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hue_Festival.Data.Programm", "Programm")
+                    b.HasOne("Hue_Festival.Models.Programm", "Programm")
                         .WithMany("Event_list")
                         .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -419,15 +426,15 @@ namespace Hue_Festival.Migrations
                     b.Navigation("Programm");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.EventLiked", b =>
+            modelBuilder.Entity("Hue_Festival.Models.EventLiked", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.Event", "Event")
+                    b.HasOne("Hue_Festival.Models.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hue_Festival.Data.User", "User")
+                    b.HasOne("Hue_Festival.Models.User", "User")
                         .WithMany("EventLiked")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -438,15 +445,15 @@ namespace Hue_Festival.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.LocationLiked", b =>
+            modelBuilder.Entity("Hue_Festival.Models.LocationLiked", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.Location", "Location")
+                    b.HasOne("Hue_Festival.Models.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hue_Festival.Data.User", "User")
+                    b.HasOne("Hue_Festival.Models.User", "User")
                         .WithMany("LocationLiked")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -457,15 +464,15 @@ namespace Hue_Festival.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.NewsLiked", b =>
+            modelBuilder.Entity("Hue_Festival.Models.NewsLiked", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.News", "News")
+                    b.HasOne("Hue_Festival.Models.News", "News")
                         .WithMany()
                         .HasForeignKey("NewsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hue_Festival.Data.User", "User")
+                    b.HasOne("Hue_Festival.Models.User", "User")
                         .WithMany("NewsLiked")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -476,9 +483,9 @@ namespace Hue_Festival.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.ProgramImage", b =>
+            modelBuilder.Entity("Hue_Festival.Models.ProgramImage", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.Programm", "Programm")
+                    b.HasOne("Hue_Festival.Models.Programm", "Programm")
                         .WithMany("PathImage_list")
                         .HasForeignKey("ProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -487,15 +494,15 @@ namespace Hue_Festival.Migrations
                     b.Navigation("Programm");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Ticket", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Ticket", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.TicketType", "TicketType")
+                    b.HasOne("Hue_Festival.Models.TicketType", "TicketType")
                         .WithMany()
                         .HasForeignKey("TicketTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hue_Festival.Data.User", "User")
+                    b.HasOne("Hue_Festival.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -506,25 +513,23 @@ namespace Hue_Festival.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.User", b =>
+            modelBuilder.Entity("Hue_Festival.Models.User", b =>
                 {
-                    b.HasOne("Hue_Festival.Data.Role", "Role")
+                    b.HasOne("Hue_Festival.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.Programm", b =>
+            modelBuilder.Entity("Hue_Festival.Models.Programm", b =>
                 {
                     b.Navigation("Event_list");
 
                     b.Navigation("PathImage_list");
                 });
 
-            modelBuilder.Entity("Hue_Festival.Data.User", b =>
+            modelBuilder.Entity("Hue_Festival.Models.User", b =>
                 {
                     b.Navigation("EventLiked");
 

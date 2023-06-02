@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hue_Festival.Data
+namespace Hue_Festival.Models
 {
     [Table("Event")]
     public class Event
